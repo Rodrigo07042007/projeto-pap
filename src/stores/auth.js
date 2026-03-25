@@ -35,6 +35,29 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async register(userData) {
+      try {
+        const response = await api.register(userData)
+        
+        if (response.user && response.token) {
+          this.token = response.token
+          this.user = response.user
+          localStorage.setItem('auth_token', response.token)
+          localStorage.setItem('auth_user', JSON.stringify(response.user))
+          
+          return response
+        } else {
+          throw new Error('Resposta inválida do servidor')
+        }
+      } catch (error) {
+        this.user = null
+        this.token = null
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('auth_user')
+        throw error
+      }
+    },
+
     async logout() {
       await api.logout()
       this.user = null

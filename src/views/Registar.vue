@@ -100,9 +100,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import api from '../services/api'
+import { useAuthStore } from '../stores/auth'
 
 const router = useRouter()
+const auth = useAuthStore()
 
 const form = ref({
   name: '',
@@ -133,18 +134,14 @@ const handleRegister = async () => {
       return
     }
 
-    // Enviar para API
-    const response = await api.register({
+    // Enviar para API usando o auth store
+    const response = await auth.register({
       name: form.value.name.trim(),
       email: form.value.email.trim(),
       nif: form.value.nif.trim(),
       password: form.value.password,
       password_confirmation: form.value.confirmPassword
     })
-
-    // Salvar token e usuário
-    localStorage.setItem('auth_token', response.token)
-    localStorage.setItem('auth_user', JSON.stringify(response.user))
 
     success.value = 'Conta criada com sucesso! Redirecionando...'
     
