@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // API base URL
-const API_URL = 'http://127.0.0.1:8000/api'
+const API_URL = 'http://myapp-api-production-a4fa.up.railway.app/api'
 
 // Criar instância axios
 const api = axios.create({
